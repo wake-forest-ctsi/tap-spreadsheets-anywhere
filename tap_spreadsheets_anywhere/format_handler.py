@@ -5,6 +5,7 @@ import tap_spreadsheets_anywhere.csv_handler
 import tap_spreadsheets_anywhere.excel_handler
 import tap_spreadsheets_anywhere.json_handler
 import tap_spreadsheets_anywhere.jsonl_handler
+import tap_spreadsheets_anywhere.xml_handler
 from azure.storage.blob import BlobServiceClient
 import os
 
@@ -134,6 +135,8 @@ def get_row_iterator(table_spec, uri):
             format = 'jsonl'
         elif lowered_uri.endswith(".csv"):
             format = 'csv'
+        elif lowered_uri.endswith(".xml"):
+            format = 'xml'
         else:
             # TODO: some protocols provide the ability to pull format (content-type) info & we could make use of that here
             reader = get_streamreader(uri, universal_newlines=universal_newlines, open_mode='r', encoding=encoding)
@@ -168,6 +171,13 @@ def get_row_iterator(table_spec, uri):
         elif format == 'jsonl':
             reader = get_streamreader(uri, universal_newlines=universal_newlines, open_mode='r', encoding=encoding)
             iterator = tap_spreadsheets_anywhere.jsonl_handler.get_row_iterator(table_spec, reader)
+        elif format == 'xml':
+            reader = get_streamreader(uri, universal_newlines=universal_newlines, open_mode='r', encoding=encoding)
+            if "xslt_path" in table_spec:
+                xslt_reader = get_streamreader(table_spec.get('xslt_path'), universal_newlines=universal_newlines, open_mode='r', encoding=encoding)
+                iterator = tap_spreadsheets_anywhere.xml_handler.get_row_iterator(table_spec, reader, xslt_reader)
+            else:
+                iterator = tap_spreadsheets_anywhere.xml_handler.get_row_iterator(table_spec, reader)
     except (ValueError,TypeError) as err:
         raise InvalidFormatError(uri,message=err)
 

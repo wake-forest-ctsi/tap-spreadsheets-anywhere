@@ -21,6 +21,9 @@ setup(
         'paramiko',
         'azure-storage-blob>=12.14.0'
     ],
+    extras_require={
+        "xml": ["lxml>=4.9.2", "xmltodict>=0.13.0"]
+    },
     entry_points="""
     [console_scripts]
     tap-spreadsheets-anywhere=tap_spreadsheets_anywhere:main
