@@ -1,0 +1,12 @@
+{
+    "tables": [
+        {
+            "path": "file://./",
+            "name": "hcris_files",
+            "pattern": "meltano_input_test.csv",
+            "start_date": "2020-01-01T00:00:00Z",
+            "key_properties": ["id"],
+            "format": "csv"
+        }
+    ]
+}

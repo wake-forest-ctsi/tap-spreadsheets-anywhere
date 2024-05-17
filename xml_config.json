@@ -1,0 +1,18 @@
+{
+    "tables": [
+        {
+            "path": "file://./",
+            "name": "waveforms",
+            "pattern": "MUSE_20230315_113017_44000.xml",
+            "start_date": "2020-01-01T00:00:00Z",
+            "key_properties": ["id"],
+            "format": "xml",
+            "xslt_path": "file://./leadfact.xsl",
+            "schema_overrides": {
+                "acquisitiondate": {
+                    "type": ["null", "date-time"]
+                }
+            }
+        }
+    ]
+}
